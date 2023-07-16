@@ -45,7 +45,7 @@ const start = () => {
         if(data === 'yes'){
             return bot.sendMessage(chatId, 'Добре, оберемо час: ')
         }
-        return bot.sendMessage(chatId, 'Я не розумію Вас😣')
+        return bot.sendMessage(chatId, 'Я не розумію Вас!😣')
         
     }
 
