@@ -33,7 +33,7 @@ const buttonAnswer = {
     })
 }*/
 
-const buttomData = {
+/*const buttomData = {
     reply_markup: JSON.stringify({
         inline_keyboard: [
             [{text: '24.07', callback_data: '24.07'}, {text: '25.07', callback_data: '25.07'}],
@@ -41,7 +41,7 @@ const buttomData = {
             [{text: '28.07', callback_data: '28.07'}, {text: '29.07', callback_data: '29.07'}],
         ]
     })
-}
+}*/
 
 /*const buttomTime = {
     reply_markup: JSON.stringify({
@@ -104,6 +104,7 @@ const start = () => {
                 reply_markup: JSON.stringify({
                     inline_keyboard: [
                         [{text: 'Лилит', callback_data: 'lilit'}, {text: 'Алёна', callback_data: 'alena'}],
+                        [{text: '<== Назад', callback_data: 'yes'}],
                     ]})
             })
            // return bot.sendMessage(chatId, 'Добре, оберіть Майстра: ', buttonMaster); 
@@ -113,12 +114,34 @@ const start = () => {
             return  bot.sendMessage(chatId, 'Поки інформації немає😥...\nАле згодом усе буде🤩\nЗ любовью до тебе ' + msg.from.first_name + ' ❤')
         }
         if(data === 'lilit'){
-            const master = 'Лилит';
-            return bot.sendMessage(chatId, 'Чудово, Ваш майстер Лилит.\nТепер оберімо дату:', buttomData);
+            return bot.editMessageText('Чудово, Ваш майстер Лилит.\nТепер оберімо дату:', {
+                chat_id: chatId,
+                message_id: msgId,
+                reply_markup: JSON.stringify({
+                    inline_keyboard: [
+                        [{text: '24.07', callback_data: '24.07'}, {text: '25.07', callback_data: '25.07'}],
+                        [{text: '26.07', callback_data: '26.07'}, {text: '27.07', callback_data: '27.07'}],
+                        [{text: '28.07', callback_data: '28.07'}, {text: '29.07', callback_data: '29.07'}],
+                        [{text: '<== Назад', callback_data: 'keratin'}],
+                    ]})
+            })
+            /*const master = 'Лилит';
+            return bot.sendMessage(chatId, 'Чудово, Ваш майстер Лилит.\nТепер оберімо дату:', buttomData);*/
         }
         if(data === 'alena'){
-            const master = 'Алёна';
-            return bot.sendMessage(chatId, 'Чудово, Ваш майстер Алёна.\nТепер оберімо дату:', buttomData);
+            return bot.editMessageText('Чудово, Ваш майстер Алёна.\nТепер оберімо дату:', {
+                chat_id: chatId,
+                message_id: msgId,
+                reply_markup: JSON.stringify({
+                    inline_keyboard: [
+                        [{text: '24.07', callback_data: '24.07'}, {text: '25.07', callback_data: '25.07'}],
+                        [{text: '26.07', callback_data: '26.07'}, {text: '27.07', callback_data: '27.07'}],
+                        [{text: '28.07', callback_data: '28.07'}, {text: '29.07', callback_data: '29.07'}],
+                        [{text: '<== Назад', callback_data: 'keratin'}],
+                    ]})
+            })
+           /* const master = 'Алёна';
+            return bot.sendMessage(chatId, 'Чудово, Ваш майстер Алёна.\nТепер оберімо дату:', buttomData);*/
         }
         return bot.sendMessage(chatId, 'Я не розумію Вас😣')
         
