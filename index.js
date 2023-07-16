@@ -32,7 +32,7 @@ const start = () => {
             
         }
         if(text === '/info'){
-            return  bot.sendMessage(chatId, 'Поки інформації немає😥...\nАле згодом усе буде🤩\nЗ любовью ' + msg.from.first_name + ' ❤')
+            return  bot.sendMessage(chatId, 'Поки інформації немає😥...\nАле згодом усе буде🤩\nЗ любовью до тебе ' + msg.from.first_name + ' ❤')
         }
         
 
@@ -46,7 +46,7 @@ const start = () => {
             return bot.sendMessage(chatId, 'Добре, оберемо час: ')
         }
         if(data === 'infobutton'){
-            return  bot.sendMessage(chatId, 'Поки інформації немає😥...\nАле згодом усе буде🤩\nЗ любовью ' + msg.from.first_name + ' ❤')
+            return  bot.sendMessage(chatId, 'Поки інформації немає😥...\nАле згодом усе буде🤩\nЗ любовью до тебе ' + msg.from.first_name + ' ❤')
         }
         return bot.sendMessage(chatId, 'Я не розумію Вас😣')
         
