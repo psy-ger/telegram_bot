@@ -15,6 +15,14 @@ const buttonAnswer = {
     })
 }
 
+const buttonMaster = {
+    reply_markup: JSON.stringify({
+        inline_keyboard: [
+            [{text: 'Лилит', callback_data: 'lilit'}, {text: 'Алёна', callback_data: 'alena'}],
+        ]
+    })
+}
+
 bot.setMyCommands([
     {command: '/start', description: 'Запуск 🚀'},
     {command: '/info', description: 'Інформація про Нас 😍'},
@@ -28,7 +36,7 @@ const start = () => {
         console.log(msg)
     
         if (text === '/start'){
-            return bot.sendMessage(chatId, 'Вітаю, ' + msg.from.first_name + ' чи готові ви записатись на процедури?', buttonAnswer);
+            return bot.sendMessage(chatId, 'Вітаю, ' + msg.from.first_name + ', чи готові ви записатись на процедури, до Наших найкращих майстрів?', buttonAnswer);
             
         }
         if(text === '/info'){
@@ -43,10 +51,16 @@ const start = () => {
         const chatId = msg.message.chat.id;
         console.log(msg)
         if(data === 'yes'){
-            return bot.sendMessage(chatId, 'Добре, оберемо час: ')
+            return bot.sendMessage(chatId, 'Добре, оберіть Майстра', buttonMaster);   
         }
         if(data === 'infobutton'){
             return  bot.sendMessage(chatId, 'Поки інформації немає😥...\nАле згодом усе буде🤩\nЗ любовью до тебе ' + msg.from.first_name + ' ❤')
+        }
+        if(data === 'lilit'){
+            return bot.sendMessage(chatId, 'Чудово, Ваш майстер Лилит.\nТепер оберімо час:');
+        }
+        if(data === 'alena'){
+            return bot.sendMessage(chatId, 'Чудово, Ваш майстер Алёна.\nТепер оберімо час:');
         }
         return bot.sendMessage(chatId, 'Я не розумію Вас😣')
         
