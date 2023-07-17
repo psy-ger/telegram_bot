@@ -76,9 +76,6 @@ const start = () => {
 
     })
 
-
-    
-
     bot.on('callback_query',  async msg=>{
         const data = msg.data;
         const chatId = msg.message.chat.id;
@@ -93,6 +90,17 @@ const start = () => {
                         [{text: 'Кератин', callback_data: 'keratin'}],
                         [{text: 'Скоро будет еще ...', callback_data: 'test1'}],
                         [{text: 'Скоро будет еще ...', callback_data: 'test2'}],
+                    ]})
+            })
+           // return bot.sendMessage(chatId, 'Добре, оберіть процедуру', buttonProcedure);   
+        }
+        if(data === 'no'){
+            return bot.editMessageText('Добре, тоді можешь більше дізнатися про Нас', {
+                chat_id: chatId,
+                message_id: msgId,
+                reply_markup: JSON.stringify({
+                    inline_keyboard: [
+                        [{text: 'Дізнайся про Нас більше 😍', callback_data: 'infobutton'}],
                     ]})
             })
            // return bot.sendMessage(chatId, 'Добре, оберіть процедуру', buttonProcedure);   
