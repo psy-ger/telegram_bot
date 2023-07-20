@@ -9,50 +9,63 @@ const bot = new TelegramApi(token, {polling: true})
 const buttonAnswer = {
     reply_markup: JSON.stringify({
         inline_keyboard: [
-            [{text: 'Так🔥', callback_data: 'yes'}, {text: 'Ні, ще думаю❓', callback_data: 'no'}],
+            [{text: 'Так🔥', callback_data: 'YesAddNumber'}, {text: 'Ні, ще думаю❓', callback_data: 'no'}],
             [{text: 'Дізнайся про Нас більше 😍', callback_data: 'infobutton'}]
         ]
     })
 }
 
-const buttomData = {
+const buttonProcedure = {
     reply_markup: JSON.stringify({
         inline_keyboard: [
-            [{text: '24.07', callback_data: '24.07'}, {text: '25.07', callback_data: '25.07'}],
-            [{text: '26.07', callback_data: '26.07'}, {text: '27.07', callback_data: '27.07'}],
-            [{text: '28.07', callback_data: '28.07'}, {text: '29.07', callback_data: '29.07'}],
-        ]
-    })
+            [{text: 'Кератин', callback_data: 'keratin'}],
+            [{text: 'Ботекс', callback_data: 'botex'}],
+            [{text: 'Скоро будет еще ...', callback_data: 'test2'}],
+        ]})
 }
-
-/*const buttom = {
-    reply_markup: JSON.stringify({
-        inline_keyboard: [
-            [{text: 'Подтвердить', callback_data: 'test1'}, {text: 'Отклонить', callback_data: 'test1'}],
-        ]
-    })
-}*/
-
 
 bot.setMyCommands([
     {command: '/start', description: 'Главная страница '},
     {command: '/info', description: 'Інформація про Нас 😍'},
 ])
 
-let number = 1;
 
 const start = () => {
+            
+    var fs = require('fs');
+
+    var array1 = fs.readFileSync('AppointmentToAlena.txt').toString().split("\n"); //Чтения файла записи для Алёны
+    for(i in array1) {}
+    var array2 = fs.readFileSync('AppointmentToLilit.txt').toString().split("\n"); //Чтения файла записи для Лилит
+    for(i in array2) {}
+    
+
     bot.on('message', async msg=>{
         const text = msg.text;
         const chatId=msg.chat.id;
-        console.log(msg)   
+        console.log(msg)
+ 
         if (text === '/start'){
-            return bot.sendMessage(chatId, 'Вітаю, ' + msg.from.first_name + ', чи готові ви записатись на процедури, до Наших найкращих майстрів?', buttonAnswer);
-            
+           //await 
+            return bot.sendMessage(chatId, 'Вітаю, ' + msg.from.first_name + ', чи готові ви записатись на процедури, до Наших найкращих майстрів?', buttonAnswer);           
         }
         if(text === '/info'){
             return  bot.sendMessage(chatId, 'Поки інформації немає😥...\nАле згодом усе буде🤩\nЗ любовью до тебе ' + msg.from.first_name + ' ❤')
         }
+        if(String(text).length === 10){ 
+            if('user/'+text+'.txt' === msg.from.id){
+                fs.unlink('user/'+ msg.from.id+'.txt', (err) => {
+                    if(err) throw err;
+                    console.log('File deleted successfully!');
+                });
+            }
+            fs.writeFile('user/'+ msg.from.id+'.txt', text, (err) => {
+                if(err) throw err;
+                console.log('Data has been added! '+text);  
+            })
+            return bot.sendMessage(chatId, 'Добре, оберіть процедуру', buttonProcedure);
+        }
+        return bot.sendMessage(chatId, 'Я не розумію Вас😣')
         
     })
 
@@ -61,14 +74,13 @@ const start = () => {
         const chatId = msg.message.chat.id;
         const msgId = msg.message.message_id;
         console.log(msg)
-        var fs = require('fs');
-            var array1 = fs.readFileSync('AppointmentToAlena.txt').toString().split("\n");
-            for(i in array1) {
-            }
-        var fs = require('fs');
-            var array2 = fs.readFileSync('AppointmentToLilit.txt').toString().split("\n");
-            for(i in array2) {
-            }
+        if(data === 'YesAddNumber'){
+            return bot.editMessageText('Добре, додайте номер телефону для того щоб ми Вам зателефонували:\nПриклад номеру - 0669993331', {
+                chat_id: chatId,
+                message_id: msgId,            
+            })
+           // return bot.sendMessage(chatId, 'Добре, оберіть процедуру', buttonProcedure);   
+        }
         if(data === 'yes'){
             return bot.editMessageText('Добре, оберіть процедуру', {
                 chat_id: chatId,
@@ -76,7 +88,7 @@ const start = () => {
                 reply_markup: JSON.stringify({
                     inline_keyboard: [
                         [{text: 'Кератин', callback_data: 'keratin'}],
-                        [{text: 'Скоро будет еще ...', callback_data: 'test2'}],
+                        [{text: 'Ботекс', callback_data: 'botex'}],
                         [{text: 'Скоро будет еще ...', callback_data: 'test2'}],
                     ]})
             })
@@ -94,6 +106,14 @@ const start = () => {
            // return bot.sendMessage(chatId, 'Добре, оберіть процедуру', buttonProcedure);   
         }
         if(data === 'keratin'){
+            fs.truncateSync('user/'+ msg.from.id+'.txt', 10, err => {
+                if(err) throw err; // не удалось очистить файл
+                console.log('Файл успешно очищен');
+             });
+            fs.appendFile('user/'+ msg.from.id+'.txt', '\nПроцедура - Кератин', 'utf8', (err) => {
+                if (err) throw err;
+                console.log('Данные были добавлены в конец файла!');
+              });
             return bot.editMessageText('Добре, оберіть Майстра:', {
                 chat_id: chatId,
                 message_id: msgId,
@@ -106,11 +126,29 @@ const start = () => {
            // return bot.sendMessage(chatId, 'Добре, оберіть Майстра: ', buttonMaster); 
               
         }
+        if(data === 'botex'){
+            fs.truncateSync('user/'+ msg.from.id+'.txt', 10, err => {
+                if(err) throw err; // не удалось очистить файл
+                console.log('Файл успешно очищен');
+             });
+            fs.appendFile('user/'+ msg.from.id+'.txt', '\nПроцедура - Ботекс', 'utf8', (err) => {
+                if (err) throw err;
+                console.log('Данные были добавлены в конец файла!');
+              });
+            return bot.editMessageText('Добре, оберіть Майстра:', {
+                chat_id: chatId,
+                message_id: msgId,
+                reply_markup: JSON.stringify({
+                    inline_keyboard: [
+                        [{text: 'Лилит', callback_data: 'lilit'}, {text: 'Алёна', callback_data: 'alena'}],
+                        [{text: '<== Назад', callback_data: 'yes'}],
+                    ]})
+            })
+           // return bot.sendMessage(chatId, 'Добре, оберіть Майстра: ', buttonMaster);    
+        }
         if(data === 'infobutton'){
             return  bot.sendMessage(chatId, 'Поки інформації немає😥...\nАле згодом усе буде🤩\nЗ любовью до тебе ' + msg.from.first_name + ' ❤')
         }
-        const masterUP = data;
-        console.log(masterUP)
         if(data === 'lilit'){
             return bot.editMessageText('Чудово, Ваш майстер Лилит.\nТепер оберімо дату:', {
                 chat_id: chatId,
@@ -142,21 +180,21 @@ const start = () => {
            /* const master = 'Алёна';
             return bot.sendMessage(chatId, 'Чудово, Ваш майстер Алёна.\nТепер оберімо дату:', buttomData);*/
         }
-        if(data === array1[i-5] || data === array1[i-4] || data === array1[i-3] || data === array1[i-2] || data === array1[i-1] || data === array1[i]){
+        var number = fs.readFileSync('user/'+ msg.from.id+'.txt', 'utf8')
+        console.log(number)
+        if(data === array1[i-5] || data === array1[i-4] || data === array1[i-3] || data === array1[i-2] || data === array1[i-1] || data === array1[i]){   
             await bot.editMessageText('Чудово, Ваш майстер Алёна.\nВаша Дата : ' + data, {
                 chat_id: chatId,
                 message_id: msgId,
             })
-            return bot.sendMessage(-1001602229085, 'Алёна до тебе новий запис.\nДата : ' + data, buttomAcceptMaster)
-           /* const master = 'Алёна';
-            return bot.sendMessage(chatId, 'Чудово, Ваш майстер Алёна.\nТепер оберімо дату:', buttomData);*/
+            return bot.sendMessage(-1001602229085, 'Алёна до тебе новий запис.\nДата : ' + data + '\nНомер телефона: ' + number)
         }
         if(data === array2[i-5] || data === array2[i-4] || data === array2[i-3] || data === array2[i-2] || data === array2[i-1] || data === array2[i]){
-            await bot.editMessageText('Чудово, Ваш майстер Лилит.\nВаша Дата : ' + data, {
+            await bot.editMessageText(' Чудово, Ваш майстер Лилит.\nВаша Дата : ' + data, {
                 chat_id: chatId,
                 message_id: msgId,
             })
-            return bot.sendMessage(-1001602229085, 'Лилит до тебе новий запис.\nДата : ' + data)
+            return bot.sendMessage(-1001602229085, 'Лилит до тебе новий запис.\nДата : ' + data + '\nНомер телефона: ' + number)
            
         }
         return bot.sendMessage(chatId, 'Я не розумію Вас😣')
