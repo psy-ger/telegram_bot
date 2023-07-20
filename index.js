@@ -73,7 +73,15 @@ const start = () => {
         const data = msg.data;
         const chatId = msg.message.chat.id;
         const msgId = msg.message.message_id;
+        const username = msg.message.chat.username;
         console.log(msg)
+        if(data === 'nextStep'){
+            return bot.editMessageText('Добре\nДавай познайомимось, отож я можу тебе звати: ', {
+                chat_id: chatId,
+                message_id: msgId,            
+            })
+           // return bot.sendMessage(chatId, 'Добре, оберіть процедуру', buttonProcedure);   
+        }
         if(data === 'YesAddNumber'){
             return bot.editMessageText('Добре, додайте номер телефону для того щоб ми Вам зателефонували:\nПриклад номеру - 0669993331', {
                 chat_id: chatId,
@@ -181,20 +189,19 @@ const start = () => {
             return bot.sendMessage(chatId, 'Чудово, Ваш майстер Алёна.\nТепер оберімо дату:', buttomData);*/
         }
         var number = fs.readFileSync('user/'+ msg.from.id+'.txt', 'utf8')
-        console.log(number)
         if(data === array1[i-5] || data === array1[i-4] || data === array1[i-3] || data === array1[i-2] || data === array1[i-1] || data === array1[i]){   
             await bot.editMessageText('Чудово, Ваш майстер Алёна.\nВаша Дата : ' + data, {
                 chat_id: chatId,
                 message_id: msgId,
             })
-            return bot.sendMessage(-1001602229085, 'Алёна до тебе новий запис.\nДата : ' + data + '\nНомер телефона: ' + number)
+            return bot.sendMessage(-1001602229085, 'Алёна до тебе новий запис.\nДата : ' + data + '\nНомер телефона: ' + number + '\nНик у Телеграм: @'+ username + '\nИм я у Телеграм: '+ msg.message.chat.first_name)
         }
         if(data === array2[i-5] || data === array2[i-4] || data === array2[i-3] || data === array2[i-2] || data === array2[i-1] || data === array2[i]){
             await bot.editMessageText(' Чудово, Ваш майстер Лилит.\nВаша Дата : ' + data, {
                 chat_id: chatId,
                 message_id: msgId,
             })
-            return bot.sendMessage(-1001602229085, 'Лилит до тебе новий запис.\nДата : ' + data + '\nНомер телефона: ' + number)
+            return bot.sendMessage(-1001602229085, 'Лилит до тебе новий запис.\nДата : ' + data + '\nНомер телефона: ' + number + '\nНик у Телеграм: @'+ username + '\nИм я у Телеграм: ' + msg.message.chat.first_name)
            
         }
         return bot.sendMessage(chatId, 'Я не розумію Вас😣')
@@ -206,5 +213,5 @@ const start = () => {
 }
 
 
-
 start();
+
